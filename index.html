@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chaos Mall — Product Ribbon</title>
+<link rel="stylesheet" href="ribbon-kit.css">
+</head>
+<body>
+<canvas id="gl" aria-hidden="true"></canvas>
+<div class="veil" aria-hidden="true"></div>
+<nav class="ui" aria-label="Site">
+  <a class="tl" href="https://agentropolis-city-of-agents.github.io/AGENTROPOLIS-CHAOS-MALL-RIBBON/">Chaos Mall<b> — 54</b></a>
+  <button class="tr" type="button">Enter the mall</button>
+  <a class="bl" href="#list">Featured <span>/</span> <span>All</span></a>
+  <button class="br" type="button">Shop the mall</button>
+</nav>
+<div class="loader" aria-hidden="true"><i></i><i></i><i></i></div>
+<main class="sr" id="list" aria-label="Featured work"></main>
+<script type="importmap">
+{ "imports": { "three": "./three.module.js", "ribbon-kit": "./ribbon-kit.js" } }
+</script>
+<script type="module">
+import { createRibbonApp } from 'ribbon-kit';
+
+/* Chaos Mall product ribbon — THIN SHELL on the ribbon kit.
+   Everything engine lives in ribbon-kit.js (vendored copy, source of
+   truth: workspace/builds/ribbon-kit/). This file holds only the mall's
+   own content: its cards, its strings, its links. */
+const CARDS = [
+  { title: 'Atrium',            video: 'media/atrium.mp4',            poster: 'media/atrium.jpg',            aspect: 1280 / 720 },
+  { title: 'Signal Scout',      video: 'media/signal-scout.mp4',      poster: 'media/signal-scout.jpg',      aspect: 1280 / 720 },
+  { title: 'Hook Forge',        video: 'media/hook-forge.mp4',        poster: 'media/hook-forge.jpg',        aspect: 1280 / 720 },
+  { title: 'Quant Lens',        video: 'media/quant-lens.mp4',        poster: 'media/quant-lens.jpg',        aspect: 1280 / 720 },
+  { title: 'Deck Pilot',        video: 'media/deck-pilot.mp4',        poster: 'media/deck-pilot.jpg',        aspect: 1280 / 720 },
+  { title: 'Ops Relay',         video: 'media/ops-relay.mp4',         poster: 'media/ops-relay.jpg',         aspect: 1280 / 720 },
+  { title: 'Lead Loom',         video: 'media/lead-loom.mp4',         poster: 'media/lead-loom.jpg',         aspect: 1280 / 720 },
+  { title: 'Fleet Command 54',  video: 'media/fleet-command-54.mp4',  poster: 'media/fleet-command-54.jpg',  aspect: 1280 / 720 },
+];
+
+const list = document.getElementById('list');
+for (const c of CARDS) {
+  const a = document.createElement('article');
+  const h = document.createElement('h2');
+  h.textContent = c.title;
+  a.appendChild(h); list.appendChild(a);
+}
+const goToRibbon = () => document.getElementById('list').scrollIntoView({ behavior: 'smooth' });
+document.querySelector('.tr').addEventListener('click', goToRibbon);
+document.querySelector('.br').addEventListener('click', goToRibbon);
+
+const app = createRibbonApp({
+  canvas: document.getElementById('gl'),
+  cards: CARDS,
+});
+window.__ribbon = app.cards;
+</script>
+</body>
+</html>

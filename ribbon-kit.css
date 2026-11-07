@@ -1,0 +1,78 @@
+/* Vendored copy of workspace/builds/ribbon-kit/ribbon-kit.css (2026-11-06). Source of truth is the kit; do not edit here. */
+/* Ribbon kit — shared tokens + chrome (corner nav, loader, veil, sr-only).
+   AGENTROPOLIS brand: obsidian #080B10, cyan #00E5FF, red #FF2638.
+   A build imports this file and passes its own copy; it does not restyle
+   the kit per build. Per-build accents go in the build's own stylesheet. */
+@font-face {
+  font-family: "Inter Tight";
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("fonts/inter-tight.woff2") format("woff2");
+}
+:root {
+  --obsidian: #080B10;
+  --cyan: #00E5FF;
+  --red: #FF2638;
+  --ink: #ffffff;
+  --muted: rgba(255,255,255,.82);
+  --hair: rgba(255,255,255,.16);
+}
+:root { --u: calc(100vw / 1500); }
+@media (max-width: 649px) { :root { --u: calc(100vw / 390); } }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  background: #000; color: #fff; height: 100%; overflow: hidden;
+  overscroll-behavior: none; touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+body {
+  font-family: "Inter Tight", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+canvas#gl { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+nav.ui a, nav.ui button {
+  position: fixed; z-index: 5; color: #fff;
+  font: 500 max(9px, calc(10 * var(--u))) / 1.4 "Inter Tight", system-ui, sans-serif;
+  text-transform: uppercase; letter-spacing: 0;
+  background: none; border: 0; text-decoration: none;
+  opacity: 0; transition: opacity .6s ease .2s;
+  cursor: pointer; padding: 0;
+}
+body.ready nav.ui a, body.ready nav.ui button { opacity: 1; }
+nav.ui .tl { left: calc(80 * var(--u)); top: calc(40 * var(--u)); }
+nav.ui .tr { right: calc(80 * var(--u)); top: calc(40 * var(--u)); }
+nav.ui .bl { left: calc(80 * var(--u)); bottom: calc(40 * var(--u)); }
+nav.ui .br { right: calc(80 * var(--u)); bottom: calc(40 * var(--u)); }
+nav.ui .bl span { opacity: .5; }
+nav.ui .tl b { color: var(--cyan); font-weight: 500; }
+nav.ui .br:hover { color: var(--cyan); }
+@media (max-width: 649px) {
+  nav.ui .tl { left: calc(40 * var(--u)); top: calc(25 * var(--u)); }
+  nav.ui .tr { right: calc(40 * var(--u)); top: calc(25 * var(--u)); }
+  nav.ui .bl { left: calc(40 * var(--u)); bottom: calc(25 * var(--u)); }
+  nav.ui .br { right: calc(40 * var(--u)); bottom: calc(25 * var(--u)); }
+}
+.loader {
+  position: fixed; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex; gap: 6px; z-index: 4;
+  transition: opacity .4s ease;
+}
+.loader i { display: block; height: 2px; background: #fff; animation: dash 1s ease-in-out infinite; }
+.loader i:nth-child(1) { width: 44px; }
+.loader i:nth-child(2) { width: 44px; animation-delay: .12s; }
+.loader i:nth-child(3) { width: 38px; animation-delay: .24s; }
+@keyframes dash { 0%, 100% { opacity: .25; } 50% { opacity: 1; } }
+body.ready .loader { opacity: 0; pointer-events: none; }
+.veil {
+  position: fixed; inset: 0; z-index: 3; pointer-events: none;
+  display: none;
+  background:
+    linear-gradient(to bottom, #000 0%, rgba(0,0,0,.77) 5%, rgba(0,0,0,.42) 10%, rgba(0,0,0,.14) 15%, rgba(0,0,0,.02) 20%, transparent 26%),
+    linear-gradient(to top, #000 0%, rgba(0,0,0,.77) 5%, rgba(0,0,0,.42) 10%, rgba(0,0,0,.14) 15%, rgba(0,0,0,.02) 20%, transparent 26%);
+}
+@media (max-width: 649px) { .veil { display: block; } }
+.sr {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
