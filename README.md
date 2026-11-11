@@ -8,8 +8,9 @@ https://agentropolis-city-of-agents.github.io/AGENTROPOLIS-CHAOS-MALL-RIBBON/
 ## What is in here
 
 - `index.html` — thin shell: the mall's cards, strings, and links, plus one
-  `createRibbonApp()` call. "Enter the mall" and "Shop the mall" scroll the
-  ribbon; nothing on this page links out to the old console.
+  `createRibbonApp()` call. "Enter the mall" and "Shop the mall" open the mall interior (a shop grid
+  on this page); clicking a ribbon card opens that shop inside it. Nothing
+  on this page links out to the old console.
 - `ribbon-kit.js` + `ribbon-kit.css` — vendored dated copies (2026-11-06) of the
   shared ribbon kit. The kit is the source of truth; do not fork the engine
   per build.

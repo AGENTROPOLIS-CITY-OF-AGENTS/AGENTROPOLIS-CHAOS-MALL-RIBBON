@@ -84,12 +84,82 @@
 .preview-badge b { color: var(--red); font-weight: 700; }
 .preview-badge span { color: var(--cyan); font-weight: 700; }
 .preview-badge:hover { border-color: var(--cyan); }
+/* Mall interior — page-owned. The ribbon is the presentation; this is the
+   place you enter. Solid obsidian, scrolls on its own, brand colors only. */
+#mall[hidden], #mall-grid[hidden], #mall-detail[hidden] { display: none; }
+#mall {
+  position: fixed; inset: 0; z-index: 20;
+  background: var(--obsidian); color: #fff;
+  overflow-y: auto; -webkit-overflow-scrolling: touch;
+  padding: 28px 20px 56px;
+}
+.mall-inner { max-width: 960px; margin: 0 auto; }
+.mall-eyebrow {
+  color: var(--cyan);
+  font-size: 11px; font-weight: 600;
+  letter-spacing: .18em; text-transform: uppercase;
+  margin-bottom: 10px;
+}
+#mall h1 {
+  font-size: 28px; line-height: 1.25; font-weight: 600;
+  letter-spacing: -.01em; margin-bottom: 10px;
+}
+.mall-sub { color: var(--muted); font-size: 15px; line-height: 1.55; margin-bottom: 20px; }
+.mall-frame {
+  border-top: 1px solid var(--hair);
+  border-bottom: 1px solid var(--hair);
+  padding: 12px 0;
+  font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  text-align: center; color: var(--muted); line-height: 1.7;
+  margin-bottom: 24px;
+}
+.mall-frame b { color: var(--red); font-weight: 700; }
+.mall-back {
+  display: inline-block; min-height: 48px;
+  padding: 12px 18px; margin-bottom: 20px;
+  background: transparent; color: #fff;
+  border: 1px solid rgba(255, 255, 255, .45);
+  font: 600 13px/1.4 "Inter Tight", system-ui, sans-serif;
+  letter-spacing: .08em; text-transform: uppercase;
+  cursor: pointer;
+}
+.mall-back:hover { border-color: var(--cyan); color: var(--cyan); }
+.mall-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+.mall-shop {
+  background: #0B1119; border: 1px solid var(--hair);
+  padding: 0; cursor: pointer; text-align: left; color: #fff;
+  font-family: inherit;
+}
+.mall-shop:hover, .mall-shop:focus-visible { border-color: var(--cyan); outline: none; }
+.mall-shop img {
+  display: block; width: 100%;
+  aspect-ratio: 16 / 9; object-fit: cover; background: #000;
+}
+.mall-shop-title {
+  display: block; padding: 14px 16px;
+  font: 600 15px/1.4 "Inter Tight", system-ui, sans-serif;
+  letter-spacing: .04em;
+}
+.mall-detail video {
+  display: block; width: 100%;
+  aspect-ratio: 16 / 9; background: #000;
+  margin-bottom: 18px;
+}
+.mall-detail h2 { font-size: 24px; font-weight: 600; margin-bottom: 8px; }
+.mall-detail p { color: var(--muted); font-size: 14px; line-height: 1.6; margin-bottom: 20px; }
 @media (max-width: 649px) {
   .guide { padding: 28px 20px 20px; }
   .guide h1 { font-size: 22px; }
   .guide-sub { font-size: 14px; }
   .guide-actions button { min-height: 48px; }
   .preview-badge { top: calc(64 * var(--u)); font-size: 9px; padding: 8px 12px; }
+  #mall { padding: 20px 16px 48px; }
+  #mall h1 { font-size: 22px; }
+  .mall-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -110,20 +180,37 @@
   <p class="guide-sub">Pick what you came to do.</p>
   <p class="guide-sub-note">No account. No keys. Just pick one.</p>
   <div class="guide-actions">
-    <button class="guide-action-primary" type="button" data-guide-go>Enter the mall</button>
-    <button class="guide-action-secondary" type="button" data-guide-go>Shop the mall</button>
-    <button class="guide-action-tertiary" type="button" data-guide-go>View featured / all</button>
+    <button class="guide-action-primary" type="button" data-guide-go="mall">Enter the mall</button>
+    <button class="guide-action-secondary" type="button" data-guide-go="mall">Shop the mall</button>
+    <button class="guide-action-tertiary" type="button" data-guide-go="ribbon">View featured / all</button>
   </div>
   <p class="guide-frame"><b>Preview</b> &middot; Not live &middot; Guidance is not permission</p>
   <button class="guide-dismiss" type="button" data-guide-close>Browse the ribbon</button>
 </section>
 <button class="preview-badge" id="preview-badge" type="button" hidden><b>Preview</b> &middot; Not live &middot; <span>Guide</span></button>
+<section id="mall" hidden aria-labelledby="mall-title">
+  <div class="mall-inner">
+    <p class="mall-eyebrow">Chaos Mall &middot; Inside</p>
+    <h1 id="mall-title">Inside the mall</h1>
+    <p class="mall-sub">Eight shops. Pick one to step inside. Preview, not live.</p>
+    <p class="mall-frame"><b>Preview</b> &middot; Not live &middot; Guidance is not permission</p>
+    <button class="mall-back" id="mall-back" type="button">&larr; Back to ribbon</button>
+    <div class="mall-grid" id="mall-grid"></div>
+    <div class="mall-detail" id="mall-detail" hidden>
+      <video id="mall-video" muted loop playsinline controls preload="none"></video>
+      <h2 id="mall-detail-title"></h2>
+      <p>Preview. Not live. This shop is a look inside the mall, not a store you can buy from.</p>
+      <button class="mall-back" id="mall-detail-back" type="button">&larr; Back to all shops</button>
+    </div>
+  </div>
+</section>
 <div class="loader" aria-hidden="true"><i></i><i></i><i></i></div>
 <main class="sr" id="list" aria-label="Featured work"></main>
 <script type="importmap">
 { "imports": { "three": "./three.module.js", "ribbon-kit": "./ribbon-kit.js" } }
 </script>
 <script type="module">
+import * as THREE from 'three';
 import { createRibbonApp } from 'ribbon-kit';
 
 /* Chaos Mall product ribbon — THIN SHELL on the ribbon kit.
@@ -148,14 +235,11 @@ for (const c of CARDS) {
   h.textContent = c.title;
   a.appendChild(h); list.appendChild(a);
 }
-const goToRibbon = () => document.getElementById('list').scrollIntoView({ behavior: 'smooth' });
-document.querySelector('.tr').addEventListener('click', goToRibbon);
-document.querySelector('.br').addEventListener('click', goToRibbon);
 
 /* HERMES CITY guide pattern, adapted to the shop. Page chrome only;
    the kit is untouched. The guide opens first; any first action closes
-   it and moves to the ribbon. The preview badge stays visible after
-   the guide closes and reopens it. */
+   it and moves on. The preview badge stays visible after the guide
+   closes and reopens it. */
 const guide = document.getElementById('guide');
 const backdrop = document.getElementById('guide-backdrop');
 const badge = document.getElementById('preview-badge');
@@ -163,14 +247,115 @@ const openGuide = () => { guide.hidden = false; backdrop.hidden = false; badge.h
 const closeGuide = () => { guide.hidden = true; backdrop.hidden = true; badge.hidden = false; };
 badge.addEventListener('click', openGuide);
 document.querySelectorAll('[data-guide-close]').forEach((el) => el.addEventListener('click', closeGuide));
-document.querySelectorAll('[data-guide-go]').forEach((el) => el.addEventListener('click', () => { closeGuide(); goToRibbon(); }));
-document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !guide.hidden) closeGuide(); });
+
+/* Mall interior — page-owned. The ribbon is the presentation; this is the
+   place you enter. "Enter the mall" and "Shop the mall" open it; clicking
+   a ribbon card opens that shop inside it. Escape steps back: shop detail
+   to the shop grid, interior to the ribbon. */
+const mall = document.getElementById('mall');
+const mallGrid = document.getElementById('mall-grid');
+const mallDetail = document.getElementById('mall-detail');
+const mallVideo = document.getElementById('mall-video');
+const mallDetailTitle = document.getElementById('mall-detail-title');
+let mallOpen = false;
+let detailCard = null;
+
+for (const c of CARDS) {
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'mall-shop';
+  const img = document.createElement('img');
+  img.src = c.poster;
+  img.alt = '';
+  const t = document.createElement('span');
+  t.className = 'mall-shop-title';
+  t.textContent = c.title;
+  b.append(img, t);
+  b.addEventListener('click', () => openShop(c));
+  mallGrid.appendChild(b);
+}
+
+function showGrid() {
+  detailCard = null;
+  mallDetail.hidden = true;
+  mallGrid.hidden = false;
+  mallVideo.pause();
+  mallVideo.removeAttribute('src');
+  mallVideo.load();
+}
+function openMall() {
+  closeGuide();
+  mall.hidden = false;
+  mallOpen = true;
+  badge.hidden = true;
+  showGrid();
+  mall.scrollTop = 0;
+  document.getElementById('mall-back').focus({ preventScroll: true });
+}
+function closeMall() {
+  showGrid();
+  mall.hidden = true;
+  mallOpen = false;
+  badge.hidden = false;
+}
+function openShop(c) {
+  if (!mallOpen) {
+    closeGuide();
+    mall.hidden = false;
+    mallOpen = true;
+    badge.hidden = true;
+  }
+  detailCard = c;
+  mallDetailTitle.textContent = c.title;
+  mallVideo.poster = c.poster;
+  mallVideo.src = c.video;
+  mallGrid.hidden = true;
+  mallDetail.hidden = false;
+  mall.scrollTop = 0;
+  mallVideo.play().catch(() => {});
+  document.getElementById('mall-detail-back').focus({ preventScroll: true });
+}
+
+document.getElementById('mall-back').addEventListener('click', closeMall);
+document.getElementById('mall-detail-back').addEventListener('click', showGrid);
+document.querySelector('.tr').addEventListener('click', openMall);
+document.querySelector('.br').addEventListener('click', openMall);
+document.querySelectorAll('[data-guide-go]').forEach((el) => el.addEventListener('click', () => {
+  if (el.dataset.guideGo === 'mall') openMall();
+  else closeGuide(); // "View featured / all" — browse the ribbon.
+}));
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  if (mallOpen && detailCard) { showGrid(); return; }
+  if (mallOpen) { closeMall(); return; }
+  if (!guide.hidden) closeGuide();
+});
 
 const app = createRibbonApp({
   canvas: document.getElementById('gl'),
   cards: CARDS,
 });
 window.__ribbon = app.cards;
+
+/* Card click — the kit only hovers; it has no click handler. Raycast the
+   tap against the card meshes so a click opens that shop. A pointer that
+   moves more than 8px is a scroll/drag, not a tap. */
+const gl = document.getElementById('gl');
+const raycaster = new THREE.Raycaster();
+const ndc = new THREE.Vector2();
+let downX = 0, downY = 0;
+gl.addEventListener('pointerdown', (e) => { downX = e.clientX; downY = e.clientY; });
+gl.addEventListener('pointerup', (e) => {
+  if (Math.hypot(e.clientX - downX, e.clientY - downY) > 8) return;
+  if (mallOpen) return;
+  ndc.x = (e.clientX / innerWidth) * 2 - 1;
+  ndc.y = -(e.clientY / innerHeight) * 2 + 1;
+  raycaster.setFromCamera(ndc, app.camera);
+  const hits = raycaster.intersectObjects(app.cards.map((c) => c.mesh), false);
+  if (!hits.length) return;
+  const card = app.cards.find((c) => c.mesh === hits[0].object);
+  if (card) openShop(card);
+});
 </script>
 </body>
 </html>
